@@ -1,0 +1,16 @@
+<mat-card class="team-card hover:shadow-lg transition-shadow cursor-pointer" (click)="select.emit(team().id)">
+  <mat-card-header>
+    <mat-card-title>{{ team().name }}</mat-card-title>
+    <mat-card-subtitle>נוצר ב: {{ team().created_at | date:'shortDate' }}</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <p class="mt-2"><mat-icon class="align-middle">people</mat-icon> {{ team().members_count }} חברים</p>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-icon-button color="primary" (click)="openAddUserDialog($event)" title="הוסף חבר">
+      <mat-icon>person_add</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

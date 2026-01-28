@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>הוספת חבר לצוות: {{ data.teamName }}</h2>
+    <mat-dialog-content>
+      <p>הכנס את מספר המשתמש שברצונך להוסיף:</p>
+      <mat-form-field class="w-full">
+        <mat-label>ID</mat-label>
+        <input matInput [(ngModel)]="id" type="text" placeholder="1">
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onCancel()">ביטול</button>
+      <button mat-raised-button color="primary" [disabled]="!id" (click)="onAdd()">הוסף</button>
+    </mat-dialog-actions>
