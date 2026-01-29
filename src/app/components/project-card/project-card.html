@@ -1,0 +1,36 @@
+<mat-card class="project-card">
+  <mat-card-header>
+    <div mat-card-avatar class="project-icon">
+      <mat-icon>assessment</mat-icon>
+    </div>
+    <mat-card-title>{{ project().name }}</mat-card-title>
+    <mat-card-subtitle>
+      <mat-icon class="text-xs align-middle">groups</mat-icon>
+      {{ teamName() }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p class="description">{{ project().description || 'אין תיאור לפרויקט זה' }}</p>
+    
+    <div class="metadata">
+      <div class="date">
+        <mat-icon>calendar_today</mat-icon>
+        <span>נוצר ב: {{ project().created_at | date:'dd/MM/yyyy' }}</span>
+      </div>
+      
+      <mat-chip-set>
+        <mat-chip [color]="getStatusColor(project().status)" selected>
+          {{ project().status || 'ללא סטטוס' }}
+        </mat-chip>
+      </mat-chip-set>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-flat-button color="primary" (click)="viewTasks.emit(project().id)">
+      <mat-icon>list_alt</mat-icon>
+      לצפייה במשימות
+    </button>
+  </mat-card-actions>
+</mat-card>

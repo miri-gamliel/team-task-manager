@@ -1,0 +1,43 @@
+<div class="board-container p-6">
+  
+  <header class="mb-8 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800">לוח משימות</h1>
+    <button mat-raised-button color="primary">
+       <mat-icon>add</mat-icon> משימה חדשה
+    </button>
+  </header>
+
+  @if (isLoading()) {
+    <div class="flex justify-center p-20">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else {
+    <div class="board-columns" cdkDropListGroup>
+      
+      <app-task-column 
+        title="לביצוע" 
+        columnId="todo"
+        [tasks]="taskService.todoTasks()"
+        [connectedTo]="['todo','in_progress','done']"
+        (dropped)="onTaskDrop($event)">
+      </app-task-column>
+
+      <app-task-column 
+        title="בתהליך" 
+        columnId="in_progress"
+        [tasks]="taskService.inProgressTasks()"
+        [connectedTo]="['todo','in_progress','done']"
+        (dropped)="onTaskDrop($event)">
+      </app-task-column>
+
+      <app-task-column 
+        title="הושלם" 
+        columnId="done"
+        [tasks]="taskService.doneTasks()"
+        [connectedTo]="['todo','in_progress','done']"
+        (dropped)="onTaskDrop($event)">
+      </app-task-column>
+
+    </div>
+  }
+</div>

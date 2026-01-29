@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>יצירת פרויקט חדש</h2>
+    <mat-dialog-content [formGroup]="projectForm">
+      <div class="flex flex-col gap-4 mt-2">
+        
+        <mat-form-field appearance="outline">
+          <mat-label>שם הפרויקט</mat-label>
+          <input matInput formControlName="name" placeholder="למשל: אפליקציית מובייל">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>תיאור (אופציונלי)</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>בחירת צוות</mat-label>
+          <mat-select formControlName="teamId">
+            @for (team of teams(); track team.id) {
+              <mat-option [value]="team.id">{{ team.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onCancel()">ביטול</button>
+      <button mat-raised-button color="primary" 
+              [disabled]="projectForm.invalid" 
+              (click)="onSubmit()">צור פרויקט</button>
+    </mat-dialog-actions>

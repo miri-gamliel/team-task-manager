@@ -1,0 +1,28 @@
+.task-card {
+      border-radius: 8px;
+      padding: 8px;
+      cursor: grab; /* רמז למשתמש שאפשר לגרור */
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .task-card:active {
+      cursor: grabbing;
+    }
+
+    .priority-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .priority-high { background-color: #ef4444; box-shadow: 0 0 4px #ef4444; }
+    .priority-medium { background-color: #f59e0b; }
+    .priority-low { background-color: #10b981; }
+
+    .assignee-circle {
+      width: 24px; height: 24px;
+      background: #e0e7ff; color: #4f46e5;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold;
+    }

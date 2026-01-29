@@ -1,0 +1,29 @@
+.board-container {
+  height: calc(100vh - 80px); /* גובה המסך פחות ההדר */
+  display: flex;
+  flex-direction: column;
+}
+
+.board-columns {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  overflow-x: auto; /* מאפשר גלילה רוחבית אם יש הרבה טורים */
+  align-items: flex-start;
+}
+
+app-task-column {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  height: 100%;
+}
+
+/* עיצוב גלילה יפה */
+.board-columns::-webkit-scrollbar {
+  height: 8px;
+}
+.board-columns::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}

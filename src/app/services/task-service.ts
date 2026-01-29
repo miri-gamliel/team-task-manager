@@ -1,0 +1,59 @@
+import { HttpClient } from '@angular/common/http';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { CreateTaskRequest, Task, TaskPriority, TaskStatus } from '../models/task.model';
+import { tap, catchError, throwError, Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class TaskService {
+  private http = inject(HttpClient);
+  private apiUrl = environment.apiUrl;
+  private tasksSignal = signal<Task[]>([]);
+
+  public tasks = this.tasksSignal.asReadonly();
+  public todoTasks = computed(() => this.tasksSignal().filter(t => t.status === 'todo'));
+  public inProgressTasks = computed(() => this.tasksSignal().filter(t => t.status === 'in_progress'));
+  public doneTasks = computed(() => this.tasksSignal().filter(t => t.status === 'done'));
+
+  loadTasks(projectId: number) {
+    return this.http.get<Task[]>(`${this.apiUrl}/api/tasks/?project_id=${projectId}`).pipe(
+      tap(tasks => this.tasksSignal.set(tasks)),
+      catchError(err => {
+        console.error('Error loading tasks', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  createTask(taskData: CreateTaskRequest): Observable<Task> {
+    return this.http.post<Task>(`${this.apiUrl}/api/tasks`, taskData).pipe(
+      tap(newTask => {
+        this.tasksSignal.update(tasks => [...tasks, newTask]);
+      })
+    );
+  }
+  
+  updateTaskStatus(taskId: number, newStatus: TaskStatus, newPriority?: TaskPriority ) {
+    const previousTasks = this.tasksSignal();
+
+    this.tasksSignal.update(tasks => 
+      tasks.map(t => t.id === taskId ? { ...t, status: newStatus, priority:newPriority ?? t.priority } : t)
+    );
+
+    this.http.patch<Task>(`${this.apiUrl}/api/tasks/${taskId}`, { status: newStatus })
+      .subscribe({
+        error: (err) => {
+          console.error('Update failed, rolling back', err);
+          this.tasksSignal.set(previousTasks);
+        }
+      });
+  }
+
+  deleteTask(taskId: number) {
+     this.http.delete(`${this.apiUrl}/api/tasks/${taskId}`).subscribe(() => {
+        this.tasksSignal.update(tasks => tasks.filter(t => t.id !== taskId));
+     });
+  }
+}

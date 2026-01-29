@@ -1,0 +1,35 @@
+<div class="page-container p-6">
+  
+  <header class="flex justify-between items-center mb-8">
+    <h1 class="text-2xl font-bold color-primary">{{ pageTitle() }}</h1>
+    
+    <button mat-raised-button color="accent" (click)="openCreateProjectDialog()">
+      <mat-icon>add</mat-icon> פרויקט חדש
+    </button>
+  </header>
+
+  @if (isLoading()) {
+    <div class="flex justify-center p-20">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="error-box">
+      {{ errorMessage() }}
+      <button (click)="loadData()">נסה שוב</button>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (proj of displayProjects(); track proj.id) {
+        <app-project-card 
+          [project]="proj" 
+          (viewTasks)="onViewTasks($event)">
+        </app-project-card>
+      } @empty {
+        <div class="col-span-full text-center p-20 bg-gray-100 rounded">
+          <mat-icon class="text-5xl mb-4">folder_open</mat-icon>
+          <p>לא נמצאו פרויקטים להצגה.</p>
+        </div>
+      }
+    </div>
+  }
+</div>

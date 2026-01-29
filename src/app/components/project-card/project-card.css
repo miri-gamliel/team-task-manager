@@ -1,0 +1,54 @@
+.project-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid #eef2f6;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.project-icon {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.description {
+  margin: 15px 0;
+  color: #666;
+  font-size: 0.9rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* חיתוך טקסט ארוך אחרי 2 שורות */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.metadata {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.date mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}

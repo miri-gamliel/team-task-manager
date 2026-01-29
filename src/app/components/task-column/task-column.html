@@ -1,0 +1,23 @@
+<div class="column-container">
+      <div class="column-header mb-4 flex justify-between items-center">
+        <h3 class="font-bold text-gray-700 m-0">{{ title() }}</h3>
+        <span class="badge">{{ tasks().length }}</span>
+      </div>
+
+      <div 
+        cdkDropList
+        [id]="columnId()" 
+        [cdkDropListData]="tasks()"
+        [cdkDropListConnectedTo]="connectedTo() || []"  
+        (cdkDropListDropped)="dropped.emit($event)" class="task-list min-h-[200px]"
+        class="task-list min-h-[200px]"
+      >
+        @for (task of tasks(); track task.id) {
+          <div class="mb-3" cdkDrag [cdkDragData]="task">
+            <app-task-card [task]="task"></app-task-card>
+            
+            <div *cdkDragPlaceholder class="custom-placeholder"></div>
+          </div>
+        }
+      </div>
+    </div>
