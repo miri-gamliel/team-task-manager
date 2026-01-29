@@ -1,8 +1,8 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { ProjectService } from '../../../services/project-service';
 import { TaskService } from '../../../services/task-service';
-import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { TaskStatus } from '../../../models/task.model';
+import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Task, TaskStatus } from '../../../models/task.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TaskColumn } from '../../task-column/task-column';
 import { MatIcon } from "@angular/material/icon";
@@ -31,12 +31,27 @@ export class TaskBoardPage {
     });
   }
 
-  onTaskDrop(event: CdkDragDrop<any>) {
-    if (event.previousContainer !== event.container) {
-      const taskId = event.item.data.id;
-      const newStatus = event.container.id as TaskStatus; 
+  // onTaskDrop(event: CdkDragDrop<any>) {
+  //   if (event.previousContainer !== event.container) {
+  //     const task = event.item.data as Task;
+  //     const newStatus = event.container.id as TaskStatus;
 
-      this.taskService.updateTaskStatus(taskId, newStatus);
+  //     this.taskService.updateTaskStatus(task.id, newStatus);
+  //   }
+  // }
+
+  onTaskDrop(event: CdkDragDrop<Task[]>) {
+    // בדיקה: האם האירוע בכלל נורה? (תוסיפי את זה כדי לראות ב-Console)
+    console.log('Dropped!', event);
+    if (event.previousContainer !== event.container) {
+      const task = event.item.data as Task;
+      const newStatus = event.container.id as TaskStatus;
+      debugger
+      if (task && newStatus) {
+        console.log('Sending to service:', task.id, newStatus);
+        // פשוט קוראים לשרות והוא כבר יעדכן את ה-Signals והשרת
+        this.taskService.updateTaskStatus(task.id, newStatus);
+      }
     }
   }
 

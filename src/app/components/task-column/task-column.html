@@ -8,7 +8,7 @@
         cdkDropList
         [id]="columnId()" 
         [cdkDropListData]="tasks()"
-        [cdkDropListConnectedTo]="connectedTo() || []"  
+        [cdkDropListConnectedTo]="['todo', 'in_progress', 'done']"  
         (cdkDropListDropped)="dropped.emit($event)" class="task-list min-h-[200px]"
         class="task-list min-h-[200px]"
       >

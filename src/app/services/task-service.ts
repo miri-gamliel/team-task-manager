@@ -35,11 +35,11 @@ export class TaskService {
     );
   }
   
-  updateTaskStatus(taskId: number, newStatus: TaskStatus, newPriority?: TaskPriority ) {
+  updateTaskStatus(taskId: number, newStatus: TaskStatus ) {
     const previousTasks = this.tasksSignal();
 
     this.tasksSignal.update(tasks => 
-      tasks.map(t => t.id === taskId ? { ...t, status: newStatus, priority:newPriority ?? t.priority } : t)
+      tasks.map(t => t.id === taskId ? { ...t, status: newStatus} : t)
     );
 
     this.http.patch<Task>(`${this.apiUrl}/api/tasks/${taskId}`, { status: newStatus })
