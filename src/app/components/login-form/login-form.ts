@@ -2,44 +2,143 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-login-form',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [
+    ReactiveFormsModule, 
+    CommonModule,
+    RouterModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule
+  ],
   templateUrl: './login-form.html',
   styleUrl: './login-form.css',
+  standalone: true
 })
 export class LoginForm implements OnInit {
 
   private router = inject(Router);
-  errorMessage = signal<string | null>(null);
+  private snackBar = inject(MatSnackBar);
   authService = inject(AuthService);
 
   userForm: FormGroup;
+  hidePassword = signal(true);
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
 
- constructor(private fb: FormBuilder) {
- this.userForm = this.fb.group({
-  email: ['', [Validators.required,Validators.email]],
-  password: ['', [Validators.required,Validators.minLength(6), Validators.maxLength(20),Validators.pattern('^(?=.*[a-zA-Z])(?=.*[0-9]).+$')]]
- });
- }
-
- ngOnInit() {}
-
- onSubmit() {
- console.log('Submitted:', this.userForm.value);
- this.authService.login(this.userForm.value).subscribe({
-  next: (user) => {
-    console.log('Login successful:', user);
-    this.errorMessage.set(null);
-    this.router.navigate(['/teams']); 
- },
-  error: (error) => { 
-    console.error('Login failed:', error);
-    this.errorMessage.set(error.message || 'אימייל או סיסמה שגויים');
+  constructor(private fb: FormBuilder) {
+    this.userForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(20),
+        Validators.pattern('^(?=.*[a-zA-Z])(?=.*[0-9]).+$')
+      ]]
+    });
   }
-});
-}
 
-}
+  ngOnInit() {}
 
+  togglePasswordVisibility() {
+    this.hidePassword.set(!this.hidePassword());
+  }
+
+  getErrorMessage(fieldName: string): string {
+    const field = this.userForm.get(fieldName);
+    
+    if (!field || !field.touched || !field.errors) {
+      return '';
+    }
+
+    if (field.errors['required']) {
+      return `${this.getFieldLabel(fieldName)} הוא שדה חובה`;
+    }
+    
+    if (fieldName === 'email' && field.errors['email']) {
+      return 'כתובת אימייל לא תקינה';
+    }
+    
+    if (fieldName === 'password') {
+      if (field.errors['minlength']) return 'הסיסמה צריכה להיות לפחות 6 תווים';
+      if (field.errors['maxlength']) return 'הסיסמה לא יכולה להיות יותר מ-20 תווים';
+      if (field.errors['pattern']) return 'הסיסמה חייבת להכיל אותיות וספרות';
+    }
+    
+    return '';
+  }
+
+  private getFieldLabel(fieldName: string): string {
+    const labels: { [key: string]: string } = {
+      email: 'אימייל',
+      password: 'סיסמה'
+    };
+    return labels[fieldName] || fieldName;
+  }
+
+  onSubmit() {
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+
+    this.authService.login(this.userForm.value).subscribe({
+      next: (user) => {
+        console.log('ההתחברות הצליחה:', user);
+        this.isLoading.set(false);
+        this.snackBar.open('התחברת בהצלחה! מעביר אותך...', 'סגור', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['success-snackbar']
+        });
+        setTimeout(() => {
+          this.router.navigate(['/teams']);
+        }, 1000);
+      },
+      error: (error) => {
+        console.error('ההתחברות נכשלה:', error);
+        this.isLoading.set(false);
+        
+        let errorMsg = 'שגיאה בהתחברות. אנא נסה שוב';
+        
+        if (error.status === 401) {
+          errorMsg = 'אימייל או סיסמה שגויים';
+        } else if (error.status === 404) {
+          errorMsg = 'משתמש לא קיים במערכת';
+        } else if (error.status === 400) {
+          errorMsg = 'פרטים לא תקינים. אנא בדוק את הנתונים';
+        } else if (error.status === 500) {
+          errorMsg = 'שגיאת שרת. אנא נסה שוב מאוחר יותר';
+        } else if (error.status === 0) {
+          errorMsg = 'אין חיבור לשרת. אנא בדוק את החיבור לאינטרנט';
+        }
+        
+        this.errorMessage.set(errorMsg);
+        this.snackBar.open(errorMsg, 'סגור', {
+          duration: 4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }
+}

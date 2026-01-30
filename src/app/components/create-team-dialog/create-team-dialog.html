@@ -1,0 +1,46 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="header-icon">
+      <mat-icon>group_add</mat-icon>
+    </div>
+    <h2 mat-dialog-title>יצירת צוות חדש</h2>
+    <p class="dialog-subtitle">הגדר שם לצוות שלך והתחל לעבוד</p>
+  </div>
+
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>שם הצוות</mat-label>
+      <input 
+        matInput 
+        [(ngModel)]="teamName"
+        type="text" 
+        placeholder="למשל: צוות פיתוח, צוות שיווק..."
+        maxlength="50"
+        autofocus
+      >
+      <mat-icon matPrefix>groups</mat-icon>
+      <mat-hint align="end">{{ teamName().length }}/50</mat-hint>
+    </mat-form-field>
+
+    <div class="info-box">
+      <mat-icon>info</mat-icon>
+      <span>תוכל להוסיף חברי צוות מיד לאחר היצירה</span>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" class="cancel-btn">
+      ביטול
+    </button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      [disabled]="!teamName().trim()" 
+      (click)="onCreate()"
+      class="create-btn"
+    >
+      <mat-icon>add</mat-icon>
+      <span>צור צוות</span>
+    </button>
+  </mat-dialog-actions>
+</div>

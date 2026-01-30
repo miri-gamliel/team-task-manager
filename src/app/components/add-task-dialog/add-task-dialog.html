@@ -1,0 +1,117 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="header-icon">
+      <mat-icon>add_task</mat-icon>
+    </div>
+    <h2 mat-dialog-title>משימה חדשה</h2>
+    <p class="dialog-subtitle">הוסף משימה חדשה ללוח העבודה</p>
+  </div>
+
+  <mat-dialog-content>
+    <form [formGroup]="taskForm" class="task-form">
+      
+      <!-- כותרת המשימה -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>כותרת המשימה</mat-label>
+        <input 
+          matInput 
+          formControlName="title" 
+          placeholder="למשל: פיתוח דף הבית, תיקון באג..."
+          maxlength="100"
+          autofocus
+        >
+        <mat-icon matPrefix>title</mat-icon>
+        @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
+          <mat-error>{{ getErrorMessage('title') }}</mat-error>
+        }
+        <mat-hint align="end">{{ taskForm.get('title')?.value?.length || 0 }}/100</mat-hint>
+      </mat-form-field>
+
+      <!-- תיאור -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>תיאור (אופציונלי)</mat-label>
+        <textarea 
+          matInput 
+          formControlName="description"
+          placeholder="תאר את המשימה בפירוט..."
+          rows="4"
+          maxlength="500"
+        ></textarea>
+        <mat-icon matPrefix>description</mat-icon>
+        @if (taskForm.get('description')?.invalid && taskForm.get('description')?.touched) {
+          <mat-error>{{ getErrorMessage('description') }}</mat-error>
+        }
+        <mat-hint align="end">{{ taskForm.get('description')?.value?.length || 0 }}/500</mat-hint>
+      </mat-form-field>
+
+      <!-- עדיפות -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>רמת עדיפות</mat-label>
+        <mat-select formControlName="priority">
+          @for (option of priorityOptions; track option.value) {
+            <mat-option [value]="option.value">
+              <div class="priority-option">
+                <div class="priority-indicator" [style.background-color]="option.color"></div>
+                <mat-icon [style.color]="option.color">{{ option.icon }}</mat-icon>
+                <span>{{ option.label }}</span>
+              </div>
+            </mat-option>
+          }
+        </mat-select>
+        <mat-icon matPrefix>flag</mat-icon>
+        @if (taskForm.get('priority')?.invalid && taskForm.get('priority')?.touched) {
+          <mat-error>{{ getErrorMessage('priority') }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- מזהה עובד -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>שיוך למשתמש (אופציונלי)</mat-label>
+        <input 
+          matInput 
+          type="number" 
+          formControlName="assigneeId"
+          placeholder="הזן מספר משתמש"
+          min="1"
+        >
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-hint>ניתן להשאיר ריק אם המשימה עדיין לא שוייכה</mat-hint>
+      </mat-form-field>
+
+    </form>
+
+    <div class="info-box">
+      <mat-icon>info</mat-icon>
+      <div class="info-text">
+        <strong>טיפ:</strong>
+        <span>המשימה תתווסף אוטומטית לעמודת "לביצוע" ותוכל לגרור אותה בין העמודות</span>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button 
+      mat-button 
+      (click)="onCancel()" 
+      class="cancel-btn"
+      [disabled]="isSubmitting()"
+    >
+      ביטול
+    </button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      [disabled]="taskForm.invalid || isSubmitting()" 
+      (click)="onSubmit()"
+      class="create-btn"
+    >
+      @if (isSubmitting()) {
+        <mat-icon class="spinning">sync</mat-icon>
+        <span>יוצר...</span>
+      } @else {
+        <mat-icon>add_task</mat-icon>
+        <span>צור משימה</span>
+      }
+    </button>
+  </mat-dialog-actions>
+</div>

@@ -1,10 +1,74 @@
-<div class="teams-grid grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
-  @for (t of teams(); track t.id) {
-    <app-team-card 
-      [team]="t" 
-      (select)="onTeamClick($event)">
-    </app-team-card>
-  } @empty {
-    <p>אין צוותים להצגה</p>
+<div class="teams-container">
+  <!-- כותרת ופעולות -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">הצוותים שלי</h1>
+        <p class="page-subtitle">נהל את כל הצוותים והפרויקטים שלך במקום אחד</p>
+      </div>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        class="create-team-btn"
+        (click)="openCreateTeamDialog()"
+      >
+        <mat-icon>add</mat-icon>
+        <span>צוות חדש</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- סטטוס טעינה -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p class="loading-text">טוען צוותים...</p>
+    </div>
+  }
+
+  <!-- הודעת שגיאה -->
+  @else if (error()) {
+    <div class="error-container">
+      <mat-icon class="error-icon">error_outline</mat-icon>
+      <h3>אופס! משהו השתבש</h3>
+      <p>{{ error() }}</p>
+      <button mat-raised-button color="primary" (click)="loadTeams()">
+        <mat-icon>refresh</mat-icon>
+        נסה שוב
+      </button>
+    </div>
+  }
+
+  <!-- רשת הצוותים -->
+  @else if (teams().length > 0) {
+    <div class="teams-grid">
+      @for (team of teams(); track team.id) {
+        <app-team-card 
+          [team]="team" 
+          (select)="onTeamClick($event)"
+          (memberAdded)="loadTeams()">
+        </app-team-card>
+      }
+    </div>
+  }
+
+  <!-- מצב ריק -->
+  @else {
+    <div class="empty-state">
+      <div class="empty-icon">
+        <mat-icon>groups_off</mat-icon>
+      </div>
+      <h3>עדיין אין לך צוותים</h3>
+      <p>צור את הצוות הראשון שלך והתחל לנהל משימות!</p>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        class="create-first-team-btn"
+        (click)="openCreateTeamDialog()"
+      >
+        <mat-icon>add</mat-icon>
+        צור צוות ראשון
+      </button>
+    </div>
   }
 </div>

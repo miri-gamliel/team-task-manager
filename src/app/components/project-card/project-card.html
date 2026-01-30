@@ -1,36 +1,56 @@
-<mat-card class="project-card">
-  <mat-card-header>
-    <div mat-card-avatar class="project-icon">
-      <mat-icon>assessment</mat-icon>
+<mat-card class="project-card"   (click)="viewTasks.emit(project().id)"
+  tabindex="0"
+  role="button"
+  [attr.aria-label]="'צפה במשימות של ' + project().name"
+  (keydown.enter)="viewTasks.emit(project().id)"
+  (keydown.space)="$event.preventDefault(); viewTasks.emit(project().id)"
+>
+  <!-- Header with Gradient -->
+  <div class="card-header">
+    <div class="project-icon-container">
+      <mat-icon class="project-icon">assessment</mat-icon>
     </div>
-    <mat-card-title>{{ project().name }}</mat-card-title>
-    <mat-card-subtitle>
-      <mat-icon class="text-xs align-middle">groups</mat-icon>
-      {{ teamName() }}
-    </mat-card-subtitle>
-  </mat-card-header>
+    <div class="status-badge">
+      <mat-icon class="status-icon">{{ getStatusConfig(project().status).icon }}</mat-icon>
+      <span>{{ getStatusConfig(project().status).label }}</span>
+    </div>
+  </div>
 
-  <mat-card-content>
-    <p class="description">{{ project().description || 'אין תיאור לפרויקט זה' }}</p>
-    
-    <div class="metadata">
-      <div class="date">
+  <!-- Content -->
+  <mat-card-content class="card-content">
+    <h3 class="project-name" [matTooltip]="project().name">
+      {{ project().name }}
+    </h3>
+
+    <div class="team-info">
+      <mat-icon>groups</mat-icon>
+      <span>{{ teamName() }}</span>
+    </div>
+
+    <p class="project-description">
+      {{ project().description || 'אין תיאור זמין לפרויקט זה' }}
+    </p>
+
+    <div class="card-footer">
+      <div class="date-info">
         <mat-icon>calendar_today</mat-icon>
-        <span>נוצר ב: {{ project().created_at | date:'dd/MM/yyyy' }}</span>
+        <span>{{ project().created_at | date:'dd/MM/yyyy' }}</span>
       </div>
-      
-      <mat-chip-set>
-        <mat-chip [color]="getStatusColor(project().status)" selected>
-          {{ project().status || 'ללא סטטוס' }}
-        </mat-chip>
-      </mat-chip-set>
     </div>
   </mat-card-content>
 
-  <mat-card-actions align="end">
-    <button mat-flat-button color="primary" (click)="viewTasks.emit(project().id)">
+  <!-- Actions -->
+  <mat-card-actions class="card-actions">
+    <button 
+      mat-raised-button 
+      color="primary" 
+      class="view-tasks-btn"
+    >
       <mat-icon>list_alt</mat-icon>
-      לצפייה במשימות
+      <span>צפה במשימות</span>
     </button>
   </mat-card-actions>
+
+  <!-- Hover Effect -->
+  <div class="card-hover-effect"></div>
 </mat-card>

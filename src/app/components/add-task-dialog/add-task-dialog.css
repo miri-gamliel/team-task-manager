@@ -11,12 +11,12 @@
   width: 72px;
   height: 72px;
   margin: 0 auto 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
 }
 
 .header-icon mat-icon {
@@ -44,7 +44,7 @@ mat-dialog-content {
   min-width: 500px;
 }
 
-.project-form {
+.task-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -54,35 +54,44 @@ mat-dialog-content {
   width: 100%;
 }
 
-.team-option {
+/* Priority Option */
+.priority-option {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  padding: 4px 0;
 }
 
-.team-option mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  color: #667eea;
+.priority-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
+.priority-option mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* Info Box */
 .info-box {
   display: flex;
   align-items: flex-start;
   gap: 12px;
   padding: 14px 16px;
-  background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+  background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
   border-radius: 10px;
   margin-top: 16px;
-  border: 1px solid #fbbf24;
+  border: 1px solid #3b82f6;
 }
 
 .info-box mat-icon {
   font-size: 22px;
   width: 22px;
   height: 22px;
-  color: #f59e0b;
+  color: #2563eb;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -92,14 +101,15 @@ mat-dialog-content {
   flex-direction: column;
   gap: 4px;
   font-size: 13px;
-  color: #78350f;
+  color: #1e40af;
 }
 
 .info-text strong {
   font-weight: 600;
-  color: #92400e;
+  color: #1e3a8a;
 }
 
+/* Actions */
 mat-dialog-actions {
   padding: 16px 0 8px 0 !important;
   gap: 12px;
@@ -137,12 +147,25 @@ mat-dialog-actions {
   }
 }
 
-/* Textarea styling */
+/* Textarea */
 textarea {
   resize: vertical;
   min-height: 80px;
+  font-family: inherit;
 }
 
+/* Remove number input arrows */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* Responsive */
 @media (max-width: 600px) {
   mat-dialog-content {
     min-width: 320px;

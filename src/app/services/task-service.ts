@@ -18,7 +18,7 @@ export class TaskService {
   public doneTasks = computed(() => this.tasksSignal().filter(t => t.status === 'done'));
 
   loadTasks(projectId: number) {
-    return this.http.get<Task[]>(`${this.apiUrl}/api/tasks/?project_id=${projectId}`).pipe(
+    return this.http.get<Task[]>(`${this.apiUrl}/api/tasks/?projectId=${projectId}`).pipe(
       tap(tasks => this.tasksSignal.set(tasks)),
       catchError(err => {
         console.error('Error loading tasks', err);
@@ -35,25 +35,28 @@ export class TaskService {
     );
   }
   
-  updateTaskStatus(taskId: number, newStatus: TaskStatus ) {
+  updateTaskStatus(taskId: number, newStatus: TaskStatus ):Observable<Task>{
     const previousTasks = this.tasksSignal();
 
     this.tasksSignal.update(tasks => 
       tasks.map(t => t.id === taskId ? { ...t, status: newStatus} : t)
     );
 
-    this.http.patch<Task>(`${this.apiUrl}/api/tasks/${taskId}`, { status: newStatus })
-      .subscribe({
-        error: (err) => {
-          console.error('Update failed, rolling back', err);
-          this.tasksSignal.set(previousTasks);
-        }
-      });
+    return this.http.patch<Task>(`${this.apiUrl}/api/tasks/${taskId}`, { status: newStatus }).pipe(
+      catchError(err => {
+        console.error('Update failed, rolling back', err);
+        this.tasksSignal.set(previousTasks);
+        return throwError(() => err);
+      })
+    );
   }
 
-  deleteTask(taskId: number) {
-     this.http.delete(`${this.apiUrl}/api/tasks/${taskId}`).subscribe(() => {
-        this.tasksSignal.update(tasks => tasks.filter(t => t.id !== taskId));
-     });
-  }
+deleteTask(taskId: number): Observable<void> {
+  return this.http.delete<void>(`${this.apiUrl}/api/tasks/${taskId}`).pipe(
+    tap(() => {
+      this.tasksSignal.update(tasks => tasks.filter(t => t.id !== taskId));
+    })
+  );
+  
+}
 }

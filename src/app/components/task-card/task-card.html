@@ -1,23 +1,64 @@
 <mat-card class="task-card">
-      <mat-card-content>
-        <div class="flex justify-between items-start mb-2">
-          <span class="font-bold text-gray-800">{{ task().title }}</span>
-          <div [class]="'priority-indicator ' + getPriorityClass(task().priority)"></div>
-        </div>
-        
-        @if (task().description) {
-          <p class="text-sm text-gray-500 mb-3 line-clamp-2">{{ task().description }}</p>
-        }
+  <!-- Card Header -->
+  <div class="card-header">
+    <div class="priority-badge" [style.background-color]="getPriorityConfig(task().priority).color">
+      <mat-icon>{{ getPriorityConfig(task().priority).icon }}</mat-icon>
+      <span>{{ getPriorityConfig(task().priority).label }}</span>
+    </div>
+    
+    <button 
+      mat-icon-button 
+      class="delete-button"
+      (click)="onDelete($event)"
+      matTooltip="מחק משימה"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
 
-        <div class="flex justify-between items-center mt-3 text-xs text-gray-400">
-          <div class="flex items-center gap-1">
-            <mat-icon class="text-xs !w-4 !h-4 text-[16px]">calendar_today</mat-icon>
-            <span>{{ task().created_at | date:'dd/MM' }}</span>
-          </div>
-          
-          <div class="assignee-circle">
-             {{ getInitials(task().assignee_id) }}
-          </div>
+  <mat-card-content class="card-content">
+    <!-- Title -->
+    <h4 class="task-title" [matTooltip]="task().title">
+      {{ task().title }}
+    </h4>
+
+    <!-- Description -->
+    @if (task().description) {
+      <p class="task-description">
+        {{ task().description }}
+      </p>
+    }
+
+    <!-- Footer Info -->
+    <div class="card-footer">
+      <div class="date-info">
+        <mat-icon>schedule</mat-icon>
+        <span>{{ task().created_at | date:'dd/MM/yyyy' }}</span>
+      </div>
+
+      @if (task().assignee_id) {
+        <div class="assignee-badge" [matTooltip]="'משתמש ' + task().assignee_id">
+          {{ getInitials(task().assignee_id) }}
         </div>
-      </mat-card-content>
-    </mat-card>
+      }
+    </div>
+  </mat-card-content>
+
+  <!-- Comments Section -->
+  <div class="comments-toggle">
+    <button 
+      mat-button 
+      class="toggle-comments-btn"
+      (click)="toggleComments($event)"
+    >
+      <mat-icon>{{ showComments() ? 'expand_less' : 'chat_bubble_outline' }}</mat-icon>
+      <span>{{ showComments() ? 'סגור הערות' : 'הצג הערות' }}</span>
+    </button>
+  </div>
+
+  @if (showComments()) {
+    <div class="comments-container" (mousedown)="$event.stopPropagation()">
+      <app-comment-section [taskId]="task().id"></app-comment-section>
+    </div>
+  }
+</mat-card>

@@ -1,35 +1,87 @@
-<div class="page-container p-6">
-  
-  <header class="flex justify-between items-center mb-8">
-    <h1 class="text-2xl font-bold color-primary">{{ pageTitle() }}</h1>
-    
-    <button mat-raised-button color="accent" (click)="openCreateProjectDialog()">
-      <mat-icon>add</mat-icon> פרויקט חדש
-    </button>
-  </header>
+<div class="projects-page">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-top">
+      @if (teamId()) {
+        <button 
+          mat-icon-button 
+          class="back-button"
+          (click)="backToTeams()"
+        >
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      }
+      
+      <div class="title-section">
+        <h1 class="page-title">{{ pageTitle() }}</h1>
+        <p class="page-subtitle">
+          <mat-icon>folder</mat-icon>
+          <span>{{ pageSubtitle() }}</span>
+        </p>
+      </div>
 
+      <button 
+        mat-raised-button 
+        color="primary" 
+        class="create-project-btn"
+        (click)="openCreateProjectDialog()"
+      >
+        <mat-icon>add</mat-icon>
+        <span>פרויקט חדש</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
   @if (isLoading()) {
-    <div class="flex justify-center p-20">
-      <mat-spinner></mat-spinner>
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p class="loading-text">טוען פרויקטים...</p>
     </div>
-  } @else if (errorMessage()) {
-    <div class="error-box">
-      {{ errorMessage() }}
-      <button (click)="loadData()">נסה שוב</button>
+  }
+
+  <!-- Error State -->
+  @else if (errorMessage()) {
+    <div class="error-container">
+      <mat-icon class="error-icon">error_outline</mat-icon>
+      <h3>אופס! משהו השתבש</h3>
+      <p>{{ errorMessage() }}</p>
+      <button mat-raised-button color="primary" (click)="loadData()">
+        <mat-icon>refresh</mat-icon>
+        נסה שוב
+      </button>
     </div>
-  } @else {
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for (proj of displayProjects(); track proj.id) {
+  }
+
+  <!-- Projects Grid -->
+  @else if (displayProjects().length > 0) {
+    <div class="projects-grid">
+      @for (project of displayProjects(); track project.id) {
         <app-project-card 
-          [project]="proj" 
+          [project]="project" 
           (viewTasks)="onViewTasks($event)">
         </app-project-card>
-      } @empty {
-        <div class="col-span-full text-center p-20 bg-gray-100 rounded">
-          <mat-icon class="text-5xl mb-4">folder_open</mat-icon>
-          <p>לא נמצאו פרויקטים להצגה.</p>
-        </div>
       }
+    </div>
+  }
+
+  <!-- Empty State -->
+  @else {
+    <div class="empty-state">
+      <div class="empty-icon">
+        <mat-icon>folder_open</mat-icon>
+      </div>
+      <h3>עדיין אין פרויקטים</h3>
+      <p>צור את הפרויקט הראשון שלך והתחל לנהל משימות!</p>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        class="create-first-project-btn"
+        (click)="openCreateProjectDialog()"
+      >
+        <mat-icon>add</mat-icon>
+        צור פרויקט ראשון
+      </button>
     </div>
   }
 </div>

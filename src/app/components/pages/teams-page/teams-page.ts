@@ -6,7 +6,6 @@ import { TeamsCard } from "../../teams-card/teams-card";
   imports: [TeamsCard],
   templateUrl: './teams-page.html',
   styleUrl: './teams-page.css',
+  standalone: true
 })
-export class TeamsPage {
-
-}
+export class TeamsPage {}

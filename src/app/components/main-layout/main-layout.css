@@ -1,42 +1,248 @@
 .navbar {
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 64px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white;
 }
 
+.toolbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  gap: 24px;
+}
+
+/* לוגו */
 .logo-container {
   display: flex;
   align-items: center;
-  font-size: 1.2rem;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  user-select: none;
 }
 
-/* הרווח שדוחף את הכל שמאלה/ימינה */
-.spacer {
-  flex: 1 1 auto;
+.logo-container:hover {
+  transform: scale(1.05);
 }
 
-.nav-links {
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: white;
+}
+
+.app-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+/* ניווט מרכזי */
+.nav-center {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.nav-button mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-button.active-link {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* פינת משתמש */
+.user-section {
+  display: flex;
   align-items: center;
 }
 
-.user-btn {
+.user-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 22px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px !important;
-  margin-left: 10px;
+  transition: all 0.2s ease;
+  color: white;
 }
 
+.user-menu-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.user-name {
+  font-weight: 500;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  opacity: 0.8;
+}
+
+/* תפריט משתמש */
+.user-menu-header {
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-large {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
+
+.user-avatar-large mat-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: white;
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-name-large {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.user-email {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.logout-button {
+  color: #e53e3e;
+}
+
+.logout-button mat-icon {
+  color: #e53e3e;
+}
+
+/* כפתורי התחברות */
+.auth-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.login-btn {
+  color: white;
+  font-weight: 500;
+}
+
+.register-btn {
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* תוכן ראשי */
 .main-content {
-  padding: 20px;
-  min-height: calc(100vh - 64px); /* גובה המסך פחות גובה ההדר */
-  background-color: #f5f7fa;
+  min-height: calc(100vh - 64px);
+  background: linear-gradient(to bottom, #f7fafc 0%, #edf2f7 100%);
 }
 
-/* יישור לימין של הטקסט (בגלל שהאתר בעברית) */
-:host {
-  direction: rtl;
+/* Responsive */
+@media (max-width: 768px) {
+  .toolbar-content {
+    padding: 0 16px;
+  }
+
+  .app-name {
+    display: none;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .nav-button span {
+    display: none;
+  }
+
+  .auth-buttons .login-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-center {
+    display: none;
+  }
 }

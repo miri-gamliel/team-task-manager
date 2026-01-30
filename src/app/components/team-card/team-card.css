@@ -1,26 +1,201 @@
-
-.team-card:hover {
-  transform: translateY(-4px);
-  background-color: #fafafa;
+.team-card {
+  position: relative;
+  cursor: pointer;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.team-avatar {
-  background-color: #f0f4ff;
-  color: #3f51b5;
+.team-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.2);
+}
+
+.team-card:hover .card-header {
+  transform: scale(1.05);
+}
+
+/* Header Section */
+.card-header {
+  position: relative;
+  height: 120px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  transition: transform 0.3s ease;
+  overflow: hidden;
 }
 
-.team-card {
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
+.header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
 }
-.team-card {
+
+.team-icon {
   position: relative;
-  overflow: hidden;
+  z-index: 1;
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.team-icon mat-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  color: white;
+}
+
+/* Content Section */
+.card-content {
+  padding: 20px !important;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* גורם ל-actions תמיד להיות למטה */
+  gap: 16px;
+}
+
+.team-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #718096;
+}
+
+.meta-item mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #a0aec0;
+}
+
+/* Actions Section */
+.card-actions {
+  padding: 12px 16px !important;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f7fafc;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.add-member-btn {
+  color: #667eea;
+}
+
+.add-member-btn:hover {
+  background: #e6effb;
+  transform: scale(1.1);
+}
+
+.actions-spacer {
+  flex: 1;
+}
+
+.view-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #667eea;
+  font-weight: 500;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+}
+
+.view-btn:hover {
+  background: #e6effb;
+}
+
+.view-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.team-card:hover .view-btn mat-icon {
+  transform: translateX(-4px);
+}
+
+/* Ripple Effect */
+.card-ripple {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.team-card:hover .card-ripple {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .card-header {
+    height: 100px;
+  }
+
+  .team-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .team-icon mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .team-name {
+    font-size: 18px;
+  }
 }

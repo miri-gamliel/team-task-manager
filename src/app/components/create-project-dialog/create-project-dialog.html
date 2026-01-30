@@ -1,31 +1,102 @@
-<h2 mat-dialog-title>יצירת פרויקט חדש</h2>
-    <mat-dialog-content [formGroup]="projectForm">
-      <div class="flex flex-col gap-4 mt-2">
-        
-        <mat-form-field appearance="outline">
-          <mat-label>שם הפרויקט</mat-label>
-          <input matInput formControlName="name" placeholder="למשל: אפליקציית מובייל">
-        </mat-form-field>
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="header-icon">
+      <mat-icon>create_new_folder</mat-icon>
+    </div>
+    <h2 mat-dialog-title>יצירת פרויקט חדש</h2>
+    <p class="dialog-subtitle">הגדר את פרטי הפרויקט והתחל לעבוד</p>
+  </div>
 
-        <mat-form-field appearance="outline">
-          <mat-label>תיאור (אופציונלי)</mat-label>
-          <textarea matInput formControlName="description"></textarea>
-        </mat-form-field>
+  <mat-dialog-content>
+    <form [formGroup]="projectForm" class="project-form">
+      
+      <!-- שם הפרויקט -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>שם הפרויקט</mat-label>
+        <input 
+          matInput 
+          formControlName="name" 
+          placeholder="למשל: אפליקציית מובייל, אתר חדש..."
+          maxlength="50"
+          autofocus
+        >
+        <mat-icon matPrefix>folder</mat-icon>
+        @if (projectForm.get('name')?.invalid && projectForm.get('name')?.touched) {
+          <mat-error>{{ getErrorMessage('name') }}</mat-error>
+        }
+        <mat-hint align="end">{{ projectForm.get('name')?.value?.length || 0 }}/50</mat-hint>
+      </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>בחירת צוות</mat-label>
-          <mat-select formControlName="teamId">
-            @for (team of teams(); track team.id) {
-              <mat-option [value]="team.id">{{ team.name }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+      <!-- בחירת צוות -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>בחירת צוות</mat-label>
+        <mat-select formControlName="teamId">
+          @for (team of teams(); track team.id) {
+            <mat-option [value]="team.id">
+              <div class="team-option">
+                <mat-icon>groups</mat-icon>
+                <span>{{ team.name }}</span>
+              </div>
+            </mat-option>
+          }
+        </mat-select>
+        <mat-icon matPrefix>groups</mat-icon>
+        @if (projectForm.get('teamId')?.invalid && projectForm.get('teamId')?.touched) {
+          <mat-error>{{ getErrorMessage('teamId') }}</mat-error>
+        }
+      </mat-form-field>
 
+      <!-- תיאור -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>תיאור הפרויקט (אופציונלי)</mat-label>
+        <textarea 
+          matInput 
+          formControlName="description"
+          placeholder="תאר את מטרת הפרויקט, היקפו והמטרות שלו..."
+          rows="4"
+          maxlength="200"
+        ></textarea>
+        <mat-icon matPrefix>description</mat-icon>
+        @if (projectForm.get('description')?.invalid && projectForm.get('description')?.touched) {
+          <mat-error>{{ getErrorMessage('description') }}</mat-error>
+        }
+        <mat-hint align="end">{{ projectForm.get('description')?.value?.length || 0 }}/200</mat-hint>
+      </mat-form-field>
+
+    </form>
+
+    <div class="info-box">
+      <mat-icon>lightbulb</mat-icon>
+      <div class="info-text">
+        <strong>טיפ:</strong>
+        <span>בחר שם תיאורי שיעזור לך ולצוות שלך לזהות את הפרויקט בקלות</span>
       </div>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="onCancel()">ביטול</button>
-      <button mat-raised-button color="primary" 
-              [disabled]="projectForm.invalid" 
-              (click)="onSubmit()">צור פרויקט</button>
-    </mat-dialog-actions>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button 
+      mat-button 
+      (click)="onCancel()" 
+      class="cancel-btn"
+      [disabled]="isSubmitting()"
+    >
+      ביטול
+    </button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      [disabled]="projectForm.invalid || isSubmitting()" 
+      (click)="onSubmit()"
+      class="create-btn"
+    >
+      @if (isSubmitting()) {
+        <mat-icon class="spinning">sync</mat-icon>
+        <span>יוצר...</span>
+      } @else {
+        <mat-icon>add</mat-icon>
+        <span>צור פרויקט</span>
+      }
+    </button>
+  </mat-dialog-actions>
+</div>

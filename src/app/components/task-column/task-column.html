@@ -1,23 +1,44 @@
 <div class="column-container">
-      <div class="column-header mb-4 flex justify-between items-center">
-        <h3 class="font-bold text-gray-700 m-0">{{ title() }}</h3>
-        <span class="badge">{{ tasks().length }}</span>
+  <!-- Column Header -->
+  <div class="column-header">
+    <div class="header-left">
+      <div class="column-icon" [style.background-color]="getColumnColor()">
+        <mat-icon>{{ getColumnIcon() }}</mat-icon>
       </div>
-
-      <div 
-        cdkDropList
-        [id]="columnId()" 
-        [cdkDropListData]="tasks()"
-        [cdkDropListConnectedTo]="['todo', 'in_progress', 'done']"  
-        (cdkDropListDropped)="dropped.emit($event)" class="task-list min-h-[200px]"
-        class="task-list min-h-[200px]"
-      >
-        @for (task of tasks(); track task.id) {
-          <div class="mb-3" cdkDrag [cdkDragData]="task">
-            <app-task-card [task]="task"></app-task-card>
-            
-            <div *cdkDragPlaceholder class="custom-placeholder"></div>
-          </div>
-        }
-      </div>
+      <h3 class="column-title">{{ title() }}</h3>
     </div>
+    <div class="task-count-badge" [style.background-color]="getColumnColor()">
+      {{ tasks().length }}
+    </div>
+  </div>
+
+  <!-- Drop List -->
+  <div 
+    cdkDropList
+    [id]="columnId()" 
+    [cdkDropListData]="tasks()"
+    [cdkDropListConnectedTo]="connectedTo() || []"
+    (cdkDropListDropped)="dropped.emit($event)"
+    class="task-list"
+  >
+    @if (tasks().length === 0) {
+      <div class="empty-column">
+        <mat-icon>inbox</mat-icon>
+        <p>אין משימות</p>
+      </div>
+    }
+
+    @for (task of tasks(); track task.id) {
+      <div 
+        cdkDrag 
+        [cdkDragData]="task"
+        class="task-wrapper"
+      >
+        <app-task-card [task]="task"></app-task-card>
+        
+        <!-- Placeholder בזמן גרירה -->
+        <div class="custom-placeholder" *cdkDragPlaceholder></div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,11 @@
+.teams-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+@media (max-width: 768px) {
+  .teams-page {
+    padding: 20px 16px;
+  }
+}

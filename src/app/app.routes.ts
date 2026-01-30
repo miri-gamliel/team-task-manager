@@ -22,7 +22,7 @@ export const routes: Routes = [
             { path: '', redirectTo: 'teams', pathMatch: 'full' },
             { path: 'teams', component: TeamsPage },
             {path:'projects', component: ProjectsPage},
-            {path:'teams/:id', component: ProjectsPage},
+            {path:'teams/:teamId', component: ProjectsPage},
             { path:'projects/:projectId', component: TaskBoardPage },
             //{ path: 'teams/:id', component: TeamDetailComponent },
             // כאן תוכלי להוסיף בהמשך: projects/:id, tasks/:id וכו'

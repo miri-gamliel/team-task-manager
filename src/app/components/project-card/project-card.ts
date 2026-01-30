@@ -6,12 +6,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-project-card',
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule],
+  imports: [
+    CommonModule, 
+    MatCardModule, 
+    MatButtonModule, 
+    MatIconModule, 
+    MatChipsModule,
+    MatTooltipModule
+  ],
   templateUrl: './project-card.html',
   styleUrl: './project-card.css',
+  standalone: true
 })
 export class ProjectCard {
   project = input.required<Project>();
@@ -24,13 +33,12 @@ export class ProjectCard {
     return team ? team.name : 'צוות לא ידוע';
   });
 
-  getStatusColor(status: string) {
-    switch (status) {
-      case 'Active': return 'primary';
-      case 'Completed': return 'accent';
-      case 'On Hold': return 'warn';
-      default: return '';
-    }
+  getStatusConfig(status: string) {
+    const configs: { [key: string]: { color: string; icon: string; label: string } } = {
+      'Active': { color: 'primary', icon: 'play_circle', label: 'פעיל' },
+      'Completed': { color: 'accent', icon: 'check_circle', label: 'הושלם' },
+      'On Hold': { color: 'warn', icon: 'pause_circle', label: 'בהמתנה' }
+    };
+    return configs[status] || { color: '', icon: 'help', label: status || 'ללא סטטוס' };
   }
-
 }

@@ -1,0 +1,85 @@
+<div class="comments-section">
+  
+  <!-- Add Comment Box -->
+  <div class="add-comment-box">
+    <mat-form-field appearance="outline" class="comment-input">
+      <mat-label>כתוב הערה...</mat-label>
+      <input 
+        matInput 
+        [(ngModel)]="newCommentText"
+        (keyup.enter)="addComment()"
+        [disabled]="isSending()"
+        placeholder="שתף את המחשבות שלך..."
+        maxlength="500"
+      >
+      <mat-hint align="end">{{ newCommentText().length }}/500</mat-hint>
+      
+      @if (isSending()) {
+        <mat-spinner matSuffix [diameter]="20"></mat-spinner>
+      } @else {
+        <button 
+          mat-icon-button 
+          matSuffix 
+          (click)="addComment()" 
+          [disabled]="!newCommentText().trim()"
+          matTooltip="שלח הערה"
+          class="send-button"
+        >
+          <mat-icon [class.active]="newCommentText().trim()">send</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <mat-spinner [diameter]="30"></mat-spinner>
+      <p>טוען הערות...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @else if (errorMessage()) {
+    <div class="error-state">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ errorMessage() }}</p>
+      <button mat-button (click)="loadComments()">
+        <mat-icon>refresh</mat-icon>
+        נסה שוב
+      </button>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @else if (comments().length === 0) {
+    <div class="empty-state">
+      <mat-icon>chat_bubble_outline</mat-icon>
+      <p>אין הערות עדיין</p>
+      <span>היה הראשון להגיב!</span>
+    </div>
+  }
+
+  <!-- Comments List -->
+  @else {
+    <div class="comments-list">
+      @for (comment of comments(); track comment.id) {
+        <div class="comment-item">
+          <div class="comment-avatar">
+            {{ getUserInitials(comment.user_id) }}
+          </div>
+          
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">משתמש {{ comment.user_id }}</span>
+              <span class="comment-time" [matTooltip]="comment.created_at | date:'dd/MM/yyyy HH:mm'">
+                {{ getRelativeTime(comment.created_at) || (comment.created_at | date:'dd/MM HH:mm') }}
+              </span>
+            </div>
+            <p class="comment-body">{{ comment.body }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

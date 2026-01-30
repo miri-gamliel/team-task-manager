@@ -1,16 +1,48 @@
-<mat-card class="team-card hover:shadow-lg transition-shadow cursor-pointer" (click)="select.emit(team().id)">
-  <mat-card-header>
-    <mat-card-title>{{ team().name }}</mat-card-title>
-    <mat-card-subtitle>נוצר ב: {{ team().created_at | date:'shortDate' }}</mat-card-subtitle>
-  </mat-card-header>
-  
-  <mat-card-content>
-    <p class="mt-2"><mat-icon class="align-middle">people</mat-icon> {{ team().members_count }} חברים</p>
+<mat-card class="team-card" (click)="select.emit(team().id)">
+  <!-- Header עם גרדיאנט -->
+  <div class="card-header">
+    <div class="team-icon">
+      <mat-icon>groups</mat-icon>
+    </div>
+    <div class="header-overlay"></div>
+  </div>
+
+  <!-- תוכן הכרטיס -->
+  <mat-card-content class="card-content">
+    <h3 class="team-name">{{ team().name }}</h3>
+    
+    <div class="team-meta">
+      <div class="meta-item">
+        <mat-icon>people</mat-icon>
+        <span>{{ team().members_count }} חברים</span>
+      </div>
+      <div class="meta-item">
+        <mat-icon>calendar_today</mat-icon>
+        <span>{{ team().created_at | date:'dd/MM/yyyy' }}</span>
+      </div>
+    </div>
   </mat-card-content>
 
-  <mat-card-actions align="end">
-    <button mat-icon-button color="primary" (click)="openAddUserDialog($event)" title="הוסף חבר">
+  <!-- פעולות -->
+  <mat-card-actions class="card-actions">
+    <button 
+      mat-icon-button 
+      class="action-btn add-member-btn"
+      (click)="openAddUserDialog($event)"
+      matTooltip="הוסף חבר לצוות"
+      matTooltipPosition="above"
+    >
       <mat-icon>person_add</mat-icon>
     </button>
+    
+    <div class="actions-spacer"></div>
+    
+    <button mat-button class="view-btn">
+      <span>צפה בצוות</span>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
   </mat-card-actions>
+
+  <!-- Ripple effect overlay -->
+  <div class="card-ripple"></div>
 </mat-card>

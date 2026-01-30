@@ -1,12 +1,52 @@
-<h2 mat-dialog-title>הוספת חבר לצוות: {{ data.teamName }}</h2>
-    <mat-dialog-content>
-      <p>הכנס את מספר המשתמש שברצונך להוסיף:</p>
-      <mat-form-field class="w-full">
-        <mat-label>ID</mat-label>
-        <input matInput [(ngModel)]="id" type="text" placeholder="1">
-      </mat-form-field>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="onCancel()">ביטול</button>
-      <button mat-raised-button color="primary" [disabled]="!id" (click)="onAdd()">הוסף</button>
-    </mat-dialog-actions>
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="header-icon">
+      <mat-icon>person_add</mat-icon>
+    </div>
+    <h2 mat-dialog-title>הוספת חבר לצוות</h2>
+    <p class="dialog-subtitle">{{ data.teamName }}</p>
+  </div>
+
+  <mat-dialog-content>
+    <p class="instruction-text">
+      הזן את מספר המזהה (ID) של המשתמש שברצונך להוסיף לצוות
+    </p>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>מזהה משתמש</mat-label>
+      <input 
+        matInput 
+        [(ngModel)]="userId"
+        type="number" 
+        placeholder="לדוגמה: 12345"
+        min="1"
+        autofocus
+      >
+      <mat-icon matPrefix>tag</mat-icon>
+    </mat-form-field>
+
+    <div class="info-box">
+      <mat-icon>info</mat-icon>
+      <div class="info-text">
+        <strong>טיפ:</strong>
+        <span>המשתמש יקבל הודעה על ההוספה לצוות</span>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" class="cancel-btn">
+      ביטול
+    </button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      [disabled]="!userId() || userId()! <= 0" 
+      (click)="onAdd()"
+      class="add-btn"
+    >
+      <mat-icon>person_add</mat-icon>
+      <span>הוסף לצוות</span>
+    </button>
+  </mat-dialog-actions>
+</div>

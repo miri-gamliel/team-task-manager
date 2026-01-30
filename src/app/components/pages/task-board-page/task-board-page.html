@@ -1,43 +1,71 @@
-<div class="board-container p-6">
-  
-  <header class="mb-8 flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-gray-800">לוח משימות</h1>
-    <button mat-raised-button color="primary">
-       <mat-icon>add</mat-icon> משימה חדשה
-    </button>
-  </header>
+<div class="task-board-page">
+  <!-- Header -->
+  <div class="board-header">
+    <div class="header-content">
+      <button 
+        mat-icon-button 
+        class="back-button"
+        (click)="backToProjects()"
+      >
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
 
-  @if (isLoading()) {
-    <div class="flex justify-center p-20">
-      <mat-spinner></mat-spinner>
+      <div class="title-section">
+        <h1 class="page-title">
+          <mat-icon>dashboard</mat-icon>
+          <span>לוח משימות - {{ projectName() }}</span>
+        </h1>
+        <p class="page-subtitle">
+          <mat-icon>task</mat-icon>
+          <span>{{ totalTasks() }} משימות בסך הכל</span>
+        </p>
+      </div>
+
+      <button 
+        mat-raised-button 
+        color="primary" 
+        class="add-task-btn"
+        (click)="openAddTaskDialog()"
+      >
+        <mat-icon>add</mat-icon>
+        <span>משימה חדשה</span>
+      </button>
     </div>
-  } @else {
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p class="loading-text">טוען משימות...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @else if (errorMessage()) {
+    <div class="error-container">
+      <mat-icon class="error-icon">error_outline</mat-icon>
+      <h3>אופס! משהו השתבש</h3>
+      <p>{{ errorMessage() }}</p>
+      <button mat-raised-button color="primary" (click)="loadData()">
+        <mat-icon>refresh</mat-icon>
+        נסה שוב
+      </button>
+    </div>
+  }
+
+  <!-- Task Board Columns -->
+  @else {
     <div class="board-columns" cdkDropListGroup>
-      
-      <app-task-column 
-        title="לביצוע" 
-        columnId="todo"
-        [tasks]="taskService.todoTasks()"
-        [connectedTo]="['todo','in_progress','done']"
-        (dropped)="onTaskDrop($event)">
-      </app-task-column>
-
-      <app-task-column 
-        title="בתהליך" 
-        columnId="in_progress"
-        [tasks]="taskService.inProgressTasks()"
-        [connectedTo]="['todo','in_progress','done']"
-        (dropped)="onTaskDrop($event)">
-      </app-task-column>
-
-      <app-task-column 
-        title="הושלם" 
-        columnId="done"
-        [tasks]="taskService.doneTasks()"
-        [connectedTo]="['todo','in_progress','done']"
-        (dropped)="onTaskDrop($event)">
-      </app-task-column>
-
+      @for (status of allColumnIds; track status) {
+        <app-task-column 
+          [columnId]="status" 
+          [title]="columnTitles[status]"
+          [tasks]="columnDataMap[status]()"
+          [connectedTo]="allColumnIds"
+          (dropped)="onTaskDrop($event)">
+        </app-task-column>
+      }
     </div>
   }
 </div>

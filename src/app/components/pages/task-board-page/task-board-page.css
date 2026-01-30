@@ -1,29 +1,203 @@
-.board-container {
-  height: calc(100vh - 80px); /* גובה המסך פחות ההדר */
+.task-board-page {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 24px;
+  height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
+/* Header */
+.board-header {
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.back-button {
+  margin-top: 4px;
+  color: #667eea;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #e6effb;
+  transform: translateX(4px);
+}
+
+.title-section {
+  flex: 1;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-title mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #667eea;
+}
+
+.page-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  color: #718096;
+  margin: 0;
+}
+
+.page-subtitle mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #a0aec0;
+}
+
+.add-task-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 24px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  margin-top: 4px;
+}
+
+.add-task-btn mat-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+/* Loading & Error States */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 20px;
+  flex: 1;
+}
+
+.loading-text {
+  font-size: 16px;
+  color: #718096;
+  margin: 0;
+}
+
+.error-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  color: #f56565;
+}
+
+.error-container h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+}
+
+.error-container p {
+  font-size: 16px;
+  color: #718096;
+  margin: 0;
+}
+
+/* Board Columns */
 .board-columns {
   display: flex;
   gap: 20px;
   flex: 1;
-  overflow-x: auto; /* מאפשר גלילה רוחבית אם יש הרבה טורים */
-  align-items: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 20px;
+  align-items: stretch;
 }
 
-app-task-column {
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
-  height: 100%;
-}
-
-/* עיצוב גלילה יפה */
 .board-columns::-webkit-scrollbar {
-  height: 8px;
+  height: 10px;
 }
-.board-columns::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+
+.board-columns::-webkit-scrollbar-track {
+  background: #f1f5f9;
   border-radius: 10px;
+}
+
+.board-columns::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 10px;
+}
+
+.board-columns::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .task-board-page {
+    padding: 16px;
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+
+  .page-title mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .board-columns {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-wrap: wrap;
+  }
+
+  .add-task-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .page-title span {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .task-board-page {
+    padding: 12px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .board-columns {
+    gap: 12px;
+  }
 }

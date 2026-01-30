@@ -6,7 +6,6 @@ import { RegistrationForm } from "../../registration-form/registration-form";
   imports: [RegistrationForm],
   templateUrl: './register-page.html',
   styleUrl: './register-page.css',
+  standalone: true
 })
-export class RegisterPage {
-
-}
+export class RegisterPage {}
