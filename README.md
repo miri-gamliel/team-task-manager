@@ -1,59 +1,38 @@
-# TeamTaskManagerClient
+# מערכת לניהול משימות צוותית (Team Task Manager)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.2.
+מערכת מודרנית לניהול פרויקטים ומשימות בשיטת קנבן (Kanban), שנבנתה בעזרת Angular 19.
 
-## Development server
+---
 
-To start a local development server, run:
+**Dear teacher,**
+את דרישות הפרויקט הבסיסיות ביצעתי כנדרש. את כל השיפורים, הליטושים והדברים שמעבר – ביצעתי בעזרת AI בשלב מאוחר יותר כדי לשדרג את התוצאה הסופית ולהגיע לרמת גימור גבוהה.
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## אודות הפרויקט
+האפליקציה מאפשרת ניהול דינמי של משימות בתוך פרויקטים. היא כוללת לוח עבודה אינטראקטיבי המאפשר מעקב אחרי סטטוסים, ניהול סדרי עדיפויות ותקשורת בין חברי הצוות באמצעות מערכת הערות.
 
-## Code scaffolding
+## תכונות עיקריות
+* **לוח קנבן דינמי:** חלוקת משימות לעמודות "לביצוע", "בתהליך" ו"הושלם".
+* **גרירה והשלכה (Drag & Drop):** שימוש ב-Angular CDK למעבר חלק של משימות בין סטטוסים.
+* **ניהול משימות (CRUD):** אפשרות להוספת משימות חדשות, הגדרת עדיפות (Priority) ומחיקת משימות קיימות.
+* **מערכת הערות:** לכל משימה יש אזור הערות ייעודי הנטען באופן דינמי (Lazy Loading) כדי לשמור על ביצועי המערכת.
+* **ממשק משתמש מתקדם:** עיצוב נקי ומודרני המבוסס על **Angular Material** ו-**Tailwind CSS**.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## טכנולוגיות
+* **Framework:** Angular 20 (שימוש ב-Signals לניהול מצב האפליקציה).
+* **UI & Components:** Angular Material (Dialogs, Cards, Inputs).
+* **Styling:** Tailwind CSS.
+* **Backend Integration:** עבודה מול API באמצעות HttpClient.
 
-```bash
-ng generate component component-name
-```
+## מבנה הפרויקט
+* `src/app/pages`: דפי האפליקציה (בחירת פרויקט ולוח המשימות).
+* `src/app/components`: רכיבים לשימוש חוזר (כרטיסי משימה, עמודות, מערכת הערות ודיאלוגים).
+* `src/app/services`: ניהול הלוגיקה העסקית והתקשורת מול השרת.
+* `src/app/models`: הגדרת Interfaces לשמירה על טיפוסיות (Typescript).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## הוראות הרצה
+1. בצעו Clone לפרויקט.
+2. הריצו `npm install` להתקנת התלויות.
+3. הריצו `ng serve` להפעלת שרת הפיתוח.
+4. כנסו לכתובת `http://localhost:4200/`.
